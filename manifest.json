@@ -1,0 +1,27 @@
+{
+	"manifest_version": 3,
+	"name": "MTS Visualizer",
+	"short_name": "MTSV",
+	"version": "1.0.0",
+	"author": "Owen Kuhn",
+	"lang": "en-US",
+	"description": "A visualization of GTFS transit data from MTS San Diego.",
+	"categories": ["san diego", "mts", "transit", "data", "gps", "map", "leaflet", "gtfs"],
+	"start_url": "index.php",
+	"display": "fullscreen",
+	"orientation": "portrait",
+	"background_color": "#0A0A0A",
+	"theme_color": "#0A0A0A",
+	"icons": [{
+		"src": "assets/favicon.webp",
+		"sizes": "512x512",
+		"type": "image/webp",
+		"purpose": "any"
+	},
+	{
+		"src": "assets/favicon_maskable.webp",
+		"sizes": "512x512",
+		"type": "image/webp",
+		"purpose": "maskable"
+	}]
+}
