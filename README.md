@@ -4,7 +4,7 @@ This project allows you to view real-time data from SDMTS. You can view the real
 ## Live Demo
 Loading times may vary, this is deployed on slow shared hosting
 
-[Live Demo](https://owenpk.com/sides/mts "Live Demo")
+[Live Demo](https://denniskuhn.com/owen/mts "Live Demo")
 
 ![Game Demo](assets/demo.gif)
 
