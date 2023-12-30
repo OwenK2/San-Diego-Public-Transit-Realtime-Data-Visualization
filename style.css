@@ -217,13 +217,13 @@ body {
 #attributions h1 {
     color: var(--text);
     font-family: var(--font);
-    font-weight bold;
+    font-weight: bold;
     font-size: 5em;
 }
 #attributions a {
     color: var(--accent);
     text-decoration: underline;
-    transition; font-weight .3s;
+    transition: font-weight .3s;
     cursor: pointer;
 }
 #attributions a:hover, #attributions a:active {
