@@ -43,8 +43,8 @@ CREATE TABLE `schedule` (
 DROP TABLE IF EXISTS `shapes`;
 CREATE TABLE `shapes` (
   `id` varchar(24) NOT NULL,
-  `path` text NOT NULL,
-  `distances` text,
+  `path` longtext NOT NULL,
+  `distances` longtext,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

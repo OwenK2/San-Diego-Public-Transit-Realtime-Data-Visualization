@@ -51,19 +51,19 @@
 
 		# Parse routes
 		$db->exec('DELETE FROM routes');
-		$db->exec('LOAD DATA LOCAL INFILE \'' . GTFS_STATIC_DEST . '/routes.txt\' INTO TABLE routes FIELDS TERMINATED BY \',\' ENCLOSED BY \'\"\' LINES TERMINATED BY \'\\n\' IGNORE 1 ROWS (id, short_name, name, type, @agency, @desc, @url, @color, @text_color, @pattern1, @pattern2, @networkid) SET color = CONCAT(\'#\', @color)');
+		$db->exec('LOAD DATA LOCAL INFILE \'' . GTFS_STATIC_DEST . '/routes.txt\' INTO TABLE routes FIELDS TERMINATED BY \',\' ENCLOSED BY \'\"\' LINES TERMINATED BY \'\\n\' IGNORE 1 ROWS (id, @agency, short_name, name, type, @url, @color, @text_color, @sort_order, @network_id, @dir0_name, @dir1_name, @route_group, @pattern1, @pattern2) SET color = CONCAT(\'#\', @color)');
 
 		# Parse trips
 		$db->exec('DELETE FROM trips');
-		$db->exec('LOAD DATA LOCAL INFILE \'' . GTFS_STATIC_DEST . '/trips.txt\' INTO TABLE trips FIELDS TERMINATED BY \',\' ENCLOSED BY \'\"\' LINES TERMINATED BY \'\\n\' IGNORE 1 ROWS (route, @service, id, headsign, @dirid, direction, @block, shape, @wheelchair_accessable, @bikes_allowed, @short_headsign)');
+		$db->exec('LOAD DATA LOCAL INFILE \'' . GTFS_STATIC_DEST . '/trips.txt\' INTO TABLE trips FIELDS TERMINATED BY \',\' ENCLOSED BY \'\"\' LINES TERMINATED BY \'\\n\' IGNORE 1 ROWS (route, @service, id, headsign, @dirid, @block, shape, @wheelchair_accessable, @bikes_allowed, direction, @tip_bikes_allowed, @short_headsign)');
 
 		# Parse stops
 		$db->exec('DELETE FROM stops');
-		$db->exec('LOAD DATA LOCAL INFILE \'' . GTFS_STATIC_DEST . '/stops.txt\' INTO TABLE stops FIELDS TERMINATED BY \',\' ENCLOSED BY \'\"\' LINES TERMINATED BY \'\\n\' IGNORE 1 ROWS (id, name, lat, lng, @code, @type, @parent, @wheelchair, @intersection, @stop_place, @reference_place, @stop_short_name, @url)');
+		$db->exec('LOAD DATA LOCAL INFILE \'' . GTFS_STATIC_DEST . '/stops.txt\' INTO TABLE stops FIELDS TERMINATED BY \',\' ENCLOSED BY \'\"\' LINES TERMINATED BY \'\\n\' IGNORE 1 ROWS (id, @code, name, @desc, lat, lng, @zoneid, @url, @location_type, @parent_station, @wheelchair_boarding, @platform_code, @intersection_code, @reference_place, @stop_name_short, @stop_place)');
 
 		# Parse schedule
 		$db->exec('DELETE FROM schedule');
-		$db->exec('LOAD DATA LOCAL INFILE \'' . GTFS_STATIC_DEST . '/stop_times.txt\' INTO TABLE schedule FIELDS TERMINATED BY \',\' ENCLOSED BY \'\"\' LINES TERMINATED BY \'\\n\' IGNORE 1 ROWS (trip, arrival, departure, stop, sequence, @timepoint, distance, @pos_in_block, @headsign, @pickupu_type, @drop_off_type, @short_headsign, @is_last)');
+		$db->exec('LOAD DATA LOCAL INFILE \'' . GTFS_STATIC_DEST . '/stop_times.txt\' INTO TABLE schedule FIELDS TERMINATED BY \',\' ENCLOSED BY \'\"\' LINES TERMINATED BY \'\\n\' IGNORE 1 ROWS (trip, arrival, departure, stop, sequence, @headsign, @pickup_type, @drop_off_type, distance, @timepoint)');
 		
 		# Parse shapes
 		$shapesCSV = fopen(GTFS_STATIC_DEST . '/shapes.txt', 'r');

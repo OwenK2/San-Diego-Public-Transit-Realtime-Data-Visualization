@@ -1,4 +1,4 @@
-let map, tileLayer, positionInterval, tripUpdateInterval, routes = {}, vehicles = {}, tripUpdates = {}, selectedVehicle, selectedData, loaderElem, userMarker, accuracyCircle, headingMarker;
+let map, tileLayer, positionInterval, tripUpdateInterval, routes = {}, vehicles = {}, tripUpdates = {}, selectedVehicle, selectedData, userMarker, accuracyCircle, headingMarker, loaded;
 
 
 const positionFetchRate = 5000;
@@ -28,6 +28,8 @@ const trainIcon = L.icon({iconUrl: 'assets/train.webp', iconSize: [24, 24]});
 
 
 window.addEventListener("load", function() {
+    loaded = 0;
+    document.getElementById('map_loader').classList.add('show');
 	if('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('sw.js', {scope: '.'})
 		.then(function (registration) {}, function (err) {
@@ -53,10 +55,13 @@ window.addEventListener("load", function() {
 	theme_listener.addListener(function(e) {setTheme(e.matches ? 'dark' : 'light')});
 	setTheme((theme_listener.matches ? 'dark' : 'light'));
 
-	post('php/downloadStaticGTFS.php', {}, false, true, 'text');
+	post('php/downloadStaticGTFS.php', {}, function() {
+	    checkInitialLoad();
+	}, true, 'text');
 	post('php/getRoutes.php', {}, function(r) {
 		routes = r;
 		beginUpdating();
+		checkInitialLoad();
 	});
 
 
@@ -87,11 +92,11 @@ function setTheme(theme) {
 	if(tileLayer) {tileLayer.remove();}
     if (theme === 'dark') {
         tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',subdomains: 'abcd',maxZoom: 20}).addTo(map);
-        document.querySelector(':root').className = 'dark';
+        document.querySelector(':root').className = '';
     }
     else {
         tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>', subdomains: 'abcd', maxZoom: 20}).addTo(map);
-        document.querySelector(':root').className = '';
+        document.querySelector(':root').className = 'light';
     }
 }
 function beginUpdating() {
@@ -100,6 +105,11 @@ function beginUpdating() {
 }
 function stopUpdating() {
 	clearInterval(positionInterval);
+}
+function checkInitialLoad() {
+    if(++loaded == 2) {
+        document.getElementById('map_loader').classList.remove('show');
+    }
 }
 
 function request(method, url, data, callback, async=true, responseType='json') {
@@ -196,11 +206,11 @@ function selectVehicle(id) {
 }
 function getVehicleInfo() {
 	updateInfoPaneStatic();
-	document.getElementById('loader').classList.add('show');
+	document.getElementById('info_loader').classList.add('show');
 	post('php/getVehicleInfo.php', {trip: vehicles[selectedVehicle].trip}, function(result) {
 		selectedData = result;
 		updateInfoPaneStatic();
-		document.getElementById('loader').classList.remove('show');
+		document.getElementById('info_loader').classList.remove('show');
 	});
 }
 function deselectVehicle() {
@@ -346,6 +356,12 @@ function openInfo() {
 }
 function closeInfo() {
 	document.getElementById('info').classList.remove('show');
+}
+function openAttrib() {
+	document.getElementById('attributions').classList.add('show');
+}
+function closeAttrib() {
+	document.getElementById('attributions').classList.remove('show');
 }
 
 // Helpers
