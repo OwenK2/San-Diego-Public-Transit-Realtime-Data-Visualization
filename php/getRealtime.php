@@ -18,7 +18,6 @@
 			exit();
 		}
 	}
-	file_put_contents(GTFS_REALTIME_TIMESTAMP_FILE, time());
 
 	# Get data from API
 	$vehiclePositions = file_get_contents(VEHICLE_POSITIONS_ENDPOINT);
@@ -71,6 +70,7 @@
 
 		echo json_encode($results);
 		file_put_contents(GTFS_REALTIME_DEST, json_encode($results));
+		file_put_contents(GTFS_REALTIME_TIMESTAMP_FILE, time());
 	}
 	catch(GPBDecodeException $e) {
 		http_response_code(500);
