@@ -9,11 +9,12 @@
 
 	# Constants
 	define('GTFS_STATIC_DEST', 'gtfs');
-	define('GTFS_REALTIME_POS_DEST', '../cache/realtime_pos.json');
-	define('GTFS_REALTIME_TRIPS_DEST', '../cache/realtime_trips.json');
-	define('GTFS_STATIC_TIMESTAMP_FILE', '../cache/static_timestamp.txt');
-	define('GTFS_REALTIME_POS_TIMESTAMP_FILE', '../cache/realtime_pos_timestamp.txt');
-	define('GTFS_REALTIME_TRIPS_TIMESTAMP_FILE', '../cache/realtime_trips_timestamp.txt');
+	define('GTFS_CACHE_DIR', '../cache');
+	define('GTFS_REALTIME_POS_DEST', GTFS_CACHE_DIR . '/realtime_pos.json');
+	define('GTFS_REALTIME_TRIPS_DEST', GTFS_CACHE_DIR . '/realtime_trips.json');
+	define('GTFS_STATIC_TIMESTAMP_FILE', GTFS_CACHE_DIR . '/static_timestamp.txt');
+	define('GTFS_REALTIME_POS_TIMESTAMP_FILE', GTFS_CACHE_DIR . '/realtime_pos_timestamp.txt');
+	define('GTFS_REALTIME_TRIPS_TIMESTAMP_FILE', GTFS_CACHE_DIR . '/realtime_trips_timestamp.txt');
 	define('GTFS_STATIC_UPDATE_FREQUENCY', 604800); # in seconds (currently set to 1 week)
 	define('GTFS_REALTIME_POS_UPDATE_FREQUENCY', 10); # in seconds
 	define('GTFS_REALTIME_TRIPS_UPDATE_FREQUENCY', 30); # in seconds
@@ -29,5 +30,10 @@
 			PDO::ATTR_STRINGIFY_FETCHES => false,
 			PDO::ATTR_EMULATE_PREPARES => false,
 		]);
+	}
+	function createCacheDir() {
+		if(!is_dir(GTFS_CACHE_DIR)) {
+			mkdir(GTFS_CACHE_DIR);
+		}
 	}
 	class NoUpdateException extends Exception {}

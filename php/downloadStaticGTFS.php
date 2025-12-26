@@ -50,9 +50,10 @@
 	# Ensure only one process can download & update at a time
 	try {
 		# Acquire Lock
+		createCacheDir();
 		$lockFile = fopen(GTFS_STATIC_TIMESTAMP_FILE, 'c+');
 		if($lockFile === false) {
-			throw new Exception('Failed to open lock file', 0);
+			throw new Exception('Failed to open lock file ' . GTFS_STATIC_TIMESTAMP_FILE, 0);
 		}
 		if(!flock($lockFile, LOCK_EX | LOCK_NB)) {
 			throw new NoUpdateException('Another update is already in progress');

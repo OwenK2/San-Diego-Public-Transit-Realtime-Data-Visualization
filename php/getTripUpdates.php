@@ -18,6 +18,7 @@
 
 	# Check if new download of file is needed
 	$updates = false;
+	createCacheDir();
 	if(is_file(GTFS_REALTIME_TRIPS_TIMESTAMP_FILE)) {
 		$lastUpdate = (int)file_get_contents(GTFS_REALTIME_TRIPS_TIMESTAMP_FILE);
 		if(time() - $lastUpdate < GTFS_REALTIME_TRIPS_UPDATE_FREQUENCY) {
